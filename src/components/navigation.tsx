@@ -57,7 +57,7 @@ export function Navigation() {
             <Link
               aria-label="GitHub"
               className={buttonStyles({ appearance: 'outline', size: 'square-petite' })}
-              href="https://github.com/irsyadadl/next-starter-kit"
+              href="https://github.com/justdlabs/astro"
             >
               <IconBrandGithub />
             </Link>
