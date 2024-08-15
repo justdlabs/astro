@@ -1,0 +1,55 @@
+---
+import '@/styles/app.css'
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+import { IconBrandJustd } from 'justd-icons'
+import { ThemeProvider } from '@/components/theme-provider'
+---
+
+
+<script is:inline>
+  const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme')
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark'
+    }
+    return 'light'
+  })()
+
+  if (theme === 'light') {
+    document.documentElement.classList.remove('dark')
+  } else {
+    document.documentElement.classList.add('dark')
+  }
+  window.localStorage.setItem('theme', theme)
+</script>
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="font-sans antialiased">
+      <main class="flex min-h-screen items-center justify-center">
+        <div class="mx-auto w-full max-w-md">
+          <div class="mx-auto mb-6 grid size-10 place-content-center rounded-lg bg-secondary">
+            <a href="/">
+              <IconBrandJustd className="size-8 shrink-0" />
+            </a>
+          </div>
+          <slot />
+        </div>
+      </main>
+  </body>
+</html>
