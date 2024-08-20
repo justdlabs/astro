@@ -21,8 +21,8 @@ import { tv } from 'tailwind-variants'
 import { Dialog } from './dialog'
 import { cn, cr, useMediaQuery } from './primitive'
 
-const Popover = ({ children }: { children: React.ReactNode }) => {
-  return <DialogTriggerPrimitive>{children}</DialogTriggerPrimitive>
+const Popover = ({ children, ...props }: { children: React.ReactNode }) => {
+  return <DialogTriggerPrimitive {...props}>{children}</DialogTriggerPrimitive>
 }
 
 const Title = ({ className, ...props }: React.ComponentProps<typeof Dialog.Title>) => (
@@ -43,7 +43,7 @@ const Body = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => 
 
 const popoverContentStyles = tv({
   base: [
-    'max-w-xs min-w-80 p-4 rounded-xl border bg-overlay bg-clip-padding text-overlay-fg shadow-lg dark:backdrop-blur-2xl dark:backdrop-saturate-200 lg:text-sm sm:max-w-3xl forced-colors:bg-[Canvas]'
+    'max-w-xs min-w-80 p-4 rounded-xl border bg-overlay bg-clip-padding text-overlay-fg shadow-sm dark:backdrop-blur-2xl dark:backdrop-saturate-200 lg:text-sm sm:max-w-3xl forced-colors:bg-[Canvas]'
   ],
   variants: {
     isMenu: {
@@ -69,7 +69,7 @@ const drawerStyles = tv({
   variants: {
     isMenu: {
       true: 'p-0 [&_[role=dialog]]:px-0 rounded-t-xl',
-      false: 'p-4 rounded-t-2xl'
+      false: 'p-4 rounded-t-3xl'
     },
     isEntering: {
       true: [
@@ -104,8 +104,8 @@ const Content = ({ respectScreen = true, children, showArrow = true, className, 
   const isMenuTrigger = popoverContext?.trigger === 'MenuTrigger'
   const isSubmenuTrigger = popoverContext?.trigger === 'SubmenuTrigger'
   const isMenu = isMenuTrigger || isSubmenuTrigger
-  let offset = showArrow ? 12 : 8
-  offset = isSubmenuTrigger ? offset - 6 : offset
+  const offset = showArrow ? 12 : 8
+  const effectiveOffset = isSubmenuTrigger ? offset - 5 : offset
   return isMobile && respectScreen ? (
     <ModalOverlay
       className={twJoin(
@@ -123,7 +123,7 @@ const Content = ({ respectScreen = true, children, showArrow = true, className, 
     </ModalOverlay>
   ) : (
     <PopoverPrimitive
-      offset={offset}
+      offset={effectiveOffset}
       {...props}
       className={cr(className, (className, renderProps) =>
         popoverContentStyles({

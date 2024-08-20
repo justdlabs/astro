@@ -9,7 +9,6 @@ import { IconBrandJustd } from 'justd-icons'
 import { ThemeProvider } from '@/components/theme-provider'
 ---
 
-
 <script is:inline>
   const theme = (() => {
     if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -29,8 +28,6 @@ import { ThemeProvider } from '@/components/theme-provider'
   window.localStorage.setItem('theme', theme)
 </script>
 
-
-<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -41,15 +38,15 @@ import { ThemeProvider } from '@/components/theme-provider'
     <title>{title}</title>
   </head>
   <body class="font-sans antialiased">
-      <main class="flex min-h-screen items-center justify-center">
-        <div class="mx-auto w-full max-w-md">
-          <div class="mx-auto mb-6 grid size-10 place-content-center rounded-lg bg-secondary">
-            <a href="/">
-              <IconBrandJustd className="size-8 shrink-0" />
-            </a>
-          </div>
-          <slot />
+    <main class="flex min-h-screen items-center justify-center">
+      <div class="mx-auto w-full max-w-md">
+        <div class="mx-auto mb-6 grid size-10 place-content-center rounded-lg bg-secondary">
+          <a href="/">
+            <IconBrandJustd className="size-8 shrink-0" />
+          </a>
         </div>
-      </main>
+        <slot />
+      </div>
+    </main>
   </body>
 </html>

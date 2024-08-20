@@ -39,7 +39,7 @@ const navigations = [
 export function Navigation() {
   const isMobile = useMediaQuery('(max-width: 640px)')
   return (
-    <nav className="sm:py-1 py-2.5 border-b bg-background">
+    <nav className="sm:py-1 py-2.5 border-b bg-bg">
       <Container>
         <div className="flex items-center justify-between">
           <div className="flex gap-x-8 items-center">

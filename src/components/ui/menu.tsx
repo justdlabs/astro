@@ -58,8 +58,9 @@ const menuStyles = tv({
   slots: {
     menu: 'z32kk max-h-[calc(var(--visual-viewport-height)-10rem)] sm:max-h-[inherit] overflow-auto rounded-xl p-1 outline outline-0 [clip-path:inset(0_0_0_0_round_calc(var(--radius)-2px))]',
     popover: 'z-50 min-w-40 p-0 outline-none shadow-sm',
-    trigger:
+    trigger: [
       'inline text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-primary-500 pressed:outline-none'
+    ]
   }
 })
 
@@ -110,7 +111,7 @@ const Item = ({ className, isDanger = false, children, ...props }: MenuItemProps
       className={cr(className, (className, renderProps) =>
         dropdownItemStyles({
           ...renderProps,
-          className
+          className: cn('pl-2.5', className)
         })
       )}
       data-danger={isDanger ? 'true' : undefined}
@@ -147,27 +148,26 @@ const MenuSeparator = ({ className, ...props }: SeparatorProps) => (
 )
 
 const Checkbox = ({ className, children, ...props }: MenuItemProps) => (
-  <Item className={cn('pl-8', className)} {...props}>
+  <Item className={cn('relative pr-8', className)} {...props}>
     {(values) => (
       <>
+        {typeof children === 'function' ? children(values) : children}
         {values.isSelected && (
-          <span className="absolute left-2.5 flex size-4 items-center animate-in justify-center">
-            <IconCheck className="size-4" />
+          <span className="absolute right-2 flex size-4 shrink-0 items-center animate-in justify-center">
+            <IconCheck />
           </span>
         )}
-
-        {typeof children === 'function' ? children(values) : children}
       </>
     )}
   </Item>
 )
 
 const Radio = ({ className, children, ...props }: MenuItemProps) => (
-  <Item className={cn('pl-8', className)} {...props}>
+  <Item className={cn('pl-8 relative', className)} {...props}>
     {(values) => (
       <>
         {values.isSelected && (
-          <span className="absolute left-3.5 flex size-[0.650rem] items-center animate-in justify-center">
+          <span className="absolute left-3 flex size-[0.650rem] items-center animate-in justify-center">
             <IconBulletFill className="size-[0.650rem]" />
           </span>
         )}
@@ -178,6 +178,7 @@ const Radio = ({ className, children, ...props }: MenuItemProps) => (
   </Item>
 )
 
+Menu.Primitive = MenuPrimitive
 Menu.Content = Content
 Menu.Header = MenuHeader
 Menu.Item = Item
