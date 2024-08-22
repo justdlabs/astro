@@ -1,7 +1,8 @@
 'use client'
+
 import { IconMoon, IconSun } from 'justd-icons'
 import { useEffect, useState } from 'react'
-import { Button } from 'ui'
+import { Button, cn } from 'ui'
 
 export function ThemeSwitcher() {
   const [theme, setTheme] = useState('light')
@@ -39,14 +40,16 @@ export function ThemeSwitcher() {
       onPress={handleSwitchTheme}
     >
       <IconSun
-        className={`h-[1.2rem] w-[1.2rem] transition-all ${
+        className={cn(
+          'h-[1.2rem] w-[1.2rem] transition-all',
           theme === 'dark' ? 'opacity-0 scale-0 -rotate-90' : 'opacity-100 scale-100 rotate-0'
-        }`}
+        )}
       />
       <IconMoon
-        className={`absolute h-[1.2rem] w-[1.2rem] transition-all ${
+        className={cn(
+          'absolute h-[1.2rem] w-[1.2rem] transition-all',
           theme === 'dark' ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-0 rotate-90'
-        }`}
+        )}
       />
     </Button>
   )
