@@ -4,7 +4,6 @@ import * as React from 'react'
 
 import type { ModalOverlayProps } from 'react-aria-components'
 import {
-  Button,
   type DialogProps,
   DialogTrigger as DialogTriggerPrimitive,
   Modal,
@@ -25,8 +24,8 @@ const Popover = ({ children, ...props }: { children: React.ReactNode }) => {
   return <DialogTriggerPrimitive {...props}>{children}</DialogTriggerPrimitive>
 }
 
-const Title = ({ className, ...props }: React.ComponentProps<typeof Dialog.Title>) => (
-  <Dialog.Title className={cn('leading-none', className)} {...props} />
+const Title = ({ level = 2, className, ...props }: React.ComponentProps<typeof Dialog.Title>) => (
+  <Dialog.Title className={cn('sm:leading-none', level === 2 && 'sm:text-lg', className)} {...props} />
 )
 
 const Header = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
@@ -69,7 +68,7 @@ const drawerStyles = tv({
   variants: {
     isMenu: {
       true: 'p-0 [&_[role=dialog]]:px-0 rounded-t-xl',
-      false: 'p-4 rounded-t-3xl'
+      false: 'py-4 rounded-t-3xl'
     },
     isEntering: {
       true: [
@@ -166,7 +165,7 @@ const Picker = ({ children, className, ...props }: PopoverProps) => {
 }
 
 Popover.Primitive = PopoverPrimitive
-Popover.Trigger = Button
+Popover.Trigger = Dialog.Trigger
 Popover.Close = Dialog.Close
 Popover.Content = Content
 Popover.Description = Dialog.Description
