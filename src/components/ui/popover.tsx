@@ -2,16 +2,19 @@
 
 import * as React from 'react'
 
-import type { ModalOverlayProps } from 'react-aria-components'
+import type {
+  DialogTriggerProps,
+  ModalOverlayProps,
+  PopoverProps as PopoverPrimitiveProps
+} from 'react-aria-components'
 import {
   type DialogProps,
-  DialogTrigger as DialogTriggerPrimitive,
+  DialogTrigger,
   Modal,
   ModalOverlay,
   OverlayArrow,
   PopoverContext,
   Popover as PopoverPrimitive,
-  type PopoverProps as PopoverPrimitiveProps,
   useSlottedContext
 } from 'react-aria-components'
 import { twJoin } from 'tailwind-merge'
@@ -20,8 +23,8 @@ import { tv } from 'tailwind-variants'
 import { Dialog } from './dialog'
 import { cn, cr, useMediaQuery } from './primitive'
 
-const Popover = ({ children, ...props }: { children: React.ReactNode }) => {
-  return <DialogTriggerPrimitive {...props}>{children}</DialogTriggerPrimitive>
+const Popover = ({ children, ...props }: DialogTriggerProps) => {
+  return <DialogTrigger {...props}>{children}</DialogTrigger>
 }
 
 const Title = ({ level = 2, className, ...props }: React.ComponentProps<typeof Dialog.Title>) => (
@@ -33,7 +36,7 @@ const Header = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) =
 )
 
 const Footer = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <Dialog.Footer className={cn('pt-4 pb-0 sm:pb-0', className)} {...props} />
+  <Dialog.Footer className={cn('pb-0 pt-4 sm:pb-0', className)} {...props} />
 )
 
 const Body = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
@@ -87,14 +90,14 @@ const drawerStyles = tv({
 interface PopoverProps
   extends Omit<React.ComponentProps<typeof Modal>, 'children'>,
     Omit<PopoverPrimitiveProps, 'children' | 'className'>,
-    ModalOverlayProps {
+    Omit<ModalOverlayProps, 'className'> {
   children: React.ReactNode
-  className?: string | ((values: any & { defaultClassName?: string }) => string)
   showArrow?: boolean
   style?: React.CSSProperties
   respectScreen?: boolean
   'aria-label'?: DialogProps['aria-label']
   'aria-labelledby'?: DialogProps['aria-labelledby']
+  className?: string | ((values: { defaultClassName?: string }) => string)
 }
 
 const Content = ({ respectScreen = true, children, showArrow = true, className, ...props }: PopoverProps) => {
@@ -108,14 +111,14 @@ const Content = ({ respectScreen = true, children, showArrow = true, className, 
   return isMobile && respectScreen ? (
     <ModalOverlay
       className={twJoin(
-        'fixed left-0 top-0 bg-overlay/10 isolate z-50 h-[--visual-viewport-height] w-full [--visual-viewport-vertical-padding:16px]',
+        'fixed left-0 top-0 isolate z-50 h-[--visual-viewport-height] w-full bg-overlay/10 [--visual-viewport-vertical-padding:16px]',
         isSubmenuTrigger ? 'bg-overlay/10' : ''
       )}
       {...props}
       isDismissable
     >
       <Modal className={cr(className, (className, renderProps) => drawerStyles({ ...renderProps, isMenu, className }))}>
-        <Dialog aria-label={isMenu ? 'Menu' : props['aria-label']} className="focus:outline-none touch-none">
+        <Dialog aria-label={isMenu ? 'Menu' : props['aria-label']} className="touch-none focus:outline-none">
           {children}
         </Dialog>
       </Modal>
@@ -152,10 +155,10 @@ const Picker = ({ children, className, ...props }: PopoverProps) => {
   return (
     <PopoverPrimitive
       {...props}
-      className={cr(className, (className, renderProps) =>
+      className={cr(className as PopoverPrimitiveProps['className'], (className, renderProps) =>
         popoverContentStyles({
           ...renderProps,
-          className: cn('max-h-72 overflow-y-auto min-w-[--trigger-width] p-0', className)
+          className: cn('max-h-72 min-w-[--trigger-width] overflow-y-auto p-0', className)
         })
       )}
     >
