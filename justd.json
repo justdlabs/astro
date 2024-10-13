@@ -1,4 +1,5 @@
 {
   "$schema": "https://getjustd.com",
-  "ui": "src/components/ui"
+  "ui": "src/components/ui",
+  "classes": "src/utils"
 }
