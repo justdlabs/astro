@@ -25,17 +25,6 @@ const config = withTV({
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           fg: 'hsl(var(--primary-fg))',
-          '50': '#eef8ff',
-          '100': '#d8eeff',
-          '200': '#b9e0ff',
-          '300': '#89cfff',
-          '400': '#52b4ff',
-          '500': '#2a91ff',
-          '600': '#0d6efd',
-          '700': '#0c5ae9',
-          '800': '#1149bc',
-          '900': '#144194',
-          '950': '#11295a'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
