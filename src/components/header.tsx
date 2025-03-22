@@ -1,7 +1,4 @@
-'use client'
-
-import { Container } from '@/components/container'
-import { Card } from 'ui'
+import { Card, Container } from "ui"
 
 interface HeaderProps {
   title: string

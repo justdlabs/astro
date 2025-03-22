@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 
 const TouchTarget = ({ children }: { children: React.ReactNode }) => {
   return (

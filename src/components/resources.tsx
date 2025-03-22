@@ -1,7 +1,6 @@
-'use client'
+"use client"
 
-import { Container } from '@/components/container'
-import { Card, Grid, Link } from 'ui'
+import { Card, Container, Grid, Link } from "ui"
 
 export function Resources() {
   return (

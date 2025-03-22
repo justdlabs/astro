@@ -1,43 +1,41 @@
-'use client'
-
-import { Container } from '@/components/container'
-import { ThemeSwitcher } from '@/components/theme-switcher'
-import { LayoutGroup, motion } from 'framer-motion'
-import { IconBrandGithub, IconBrandJustd } from 'justd-icons'
-import React, { useEffect } from 'react'
-import { ListBox, ListBoxItem } from 'react-aria-components'
-import { tv } from 'tailwind-variants'
-import { Button, buttonStyles, Link, Sheet, useMediaQuery } from 'ui'
+import { ThemeSwitcher } from "@/components/theme-switcher"
+import { useMediaQuery } from "@/utils/use-media-query"
+import { LayoutGroup, motion } from "framer-motion"
+import { IconBrandGithub, IconBrandJustd } from "justd-icons"
+import React, { useEffect } from "react"
+import { ListBox, ListBoxItem } from "react-aria-components"
+import { tv } from "tailwind-variants"
+import { Button, buttonStyles, Container, Link, Sheet } from "ui"
 
 const navigations = [
   {
-    name: 'Home',
-    url: '/'
+    name: "Home",
+    url: "/"
   },
   {
-    name: 'About',
-    url: '/about'
+    name: "About",
+    url: "/about"
   },
   {
-    name: 'Login',
-    url: '/login'
+    name: "Login",
+    url: "/login"
   },
   {
-    name: 'Components',
-    url: 'https://justd.co/components'
+    name: "Components",
+    url: "https://justd.co/components"
   },
   {
-    name: 'Colors',
-    url: 'https://justd.co/colors'
+    name: "Colors",
+    url: "https://justd.co/colors"
   },
   {
-    name: 'Icons',
-    url: 'https://getjustd.com/icons'
+    name: "Icons",
+    url: "https://getjustd.com/icons"
   }
 ]
 
 export function Navigation() {
-  const isMobile = useMediaQuery('(max-width: 640px)')
+  const isMobile = useMediaQuery("(max-width: 640px)")
   return (
     <nav className="sm:py-1 py-2.5 border-b bg-bg">
       <Container>
@@ -56,14 +54,14 @@ export function Navigation() {
             <ThemeSwitcher />
             <Link
               aria-label="GitHub"
-              className={buttonStyles({ appearance: 'outline', size: 'square-petite' })}
+              className={buttonStyles({ appearance: "outline", size: "square-petite" })}
               href="https://github.com/justdlabs/astro"
             >
               <IconBrandGithub />
             </Link>
             <Link
               aria-label="Justd"
-              className={buttonStyles({ appearance: 'outline', size: 'square-petite' })}
+              className={buttonStyles({ appearance: "outline", size: "square-petite" })}
               href="https://justd.co"
             >
               <IconBrandJustd />
@@ -77,18 +75,18 @@ export function Navigation() {
 }
 
 const navStyles = tv({
-  base: 'text-sm relative py-0 sm:py-4 inline-flex focus:outline-none focus-visible:text-fg font-medium',
+  base: "text-sm relative py-0 sm:py-4 inline-flex focus:outline-hidden focus-visible:text-fg font-medium",
   variants: {
     isCurrent: {
-      true: 'text-fg',
-      false: 'text-muted-fg'
+      true: "text-fg",
+      false: "text-muted-fg"
     }
   }
 })
 
 function NavResponsive() {
   const [isOpen, setOpen] = React.useState(false)
-  const [pathname, setPathname] = React.useState('')
+  const [pathname, setPathname] = React.useState("")
 
   useEffect(() => {
     setPathname(window.location.pathname)
@@ -116,13 +114,13 @@ function NavResponsive() {
 }
 
 function NavContent() {
-  const isMobile = useMediaQuery('(max-width: 640px)')
+  const isMobile = useMediaQuery("(max-width: 640px)")
   const id = React.useId()
   return (
     <LayoutGroup id={id}>
       <ListBox
-        orientation={isMobile ? 'vertical' : 'horizontal'}
-        layout={isMobile ? 'stack' : 'grid'}
+        orientation={isMobile ? "vertical" : "horizontal"}
+        layout={isMobile ? "stack" : "grid"}
         className="flex relative sm:flex-row flex-col sm:items-center gap-3 sm:gap-6"
         items={navigations}
         aria-label="Navigation"
@@ -130,7 +128,7 @@ function NavContent() {
         {(item) => (
           <NavLink
             textValue={item.name}
-            target={['Components', 'Colors', 'Icons'].includes(item.name) ? '_blank' : undefined}
+            target={["Components", "Colors", "Icons"].includes(item.name) ? "_blank" : undefined}
             href={item.url}
             id={item.url}
           >
@@ -149,7 +147,7 @@ interface LinkProps extends React.ComponentProps<typeof ListBoxItem> {
 }
 
 function NavLink({ children, className, ...props }: LinkProps) {
-  const [pathname, setPathname] = React.useState('')
+  const [pathname, setPathname] = React.useState("")
 
   useEffect(() => {
     setPathname(window.location.pathname)

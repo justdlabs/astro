@@ -1,32 +1,25 @@
-'use client'
+import { useState } from "react"
 
-import * as React from 'react'
+import { IconEye, IconEyeClosed } from "justd-icons"
+import { Button as ButtonPrimitive, TextField as TextFieldPrimitive } from "react-aria-components"
+import type { InputProps, TextFieldProps as TextFieldPrimitiveProps } from "react-aria-components"
+import type { FieldProps } from "./field"
+import { Description, FieldError, FieldGroup, Input, Label } from "./field"
+import { Loader } from "./loader"
+import { composeTailwindRenderProps } from "./primitive"
 
-import type { TextInputDOMProps } from '@react-types/shared'
-import { IconEye, IconEyeClosed, IconLoader } from 'justd-icons'
-import {
-  Button as ButtonPrimitive,
-  TextField as TextFieldPrimitive,
-  type TextFieldProps as TextFieldPrimitiveProps
-} from 'react-aria-components'
-
-import type { FieldProps } from './field'
-import { Description, FieldError, FieldGroup, fieldGroupPrefixStyles, Input, Label } from './field'
-import { ctr } from './primitive'
-
-type InputType = Exclude<TextInputDOMProps['type'], 'password'>
+type InputType = Exclude<InputProps["type"], "password">
 
 interface BaseTextFieldProps extends TextFieldPrimitiveProps, FieldProps {
   prefix?: React.ReactNode
   suffix?: React.ReactNode
-  isLoading?: boolean
-  indicatorPlace?: 'prefix' | 'suffix'
+  isPending?: boolean
   className?: string
 }
 
 interface RevealableTextFieldProps extends BaseTextFieldProps {
   isRevealable: true
-  type: 'password'
+  type: "password"
 }
 
 interface NonRevealableTextFieldProps extends BaseTextFieldProps {
@@ -43,53 +36,65 @@ const TextField = ({
   errorMessage,
   prefix,
   suffix,
-  isLoading,
-  indicatorPlace,
+  isPending,
   className,
   isRevealable,
   type,
   ...props
 }: TextFieldProps) => {
-  const [isPasswordVisible, setIsPasswordVisible] = React.useState(false)
-  const inputType = isRevealable ? (isPasswordVisible ? 'text' : 'password') : type
-
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const inputType = isRevealable ? (isPasswordVisible ? "text" : "password") : type
   const handleTogglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev)
   }
   return (
-    <TextFieldPrimitive type={inputType} {...props} className={ctr(className, 'group flex flex-col gap-1')}>
-      {label && <Label>{label}</Label>}
-      <FieldGroup data-loading={isLoading ? 'true' : undefined} className={fieldGroupPrefixStyles({ className })}>
-        {isLoading && indicatorPlace === 'prefix' ? (
-          <IconLoader className="animate-spin isPfx" />
-        ) : prefix ? (
-          <span className="atrs isPfx x2e2">{prefix}</span>
-        ) : null}
-        <Input className="px-2.5" placeholder={placeholder} />
-        {isRevealable ? (
-          <ButtonPrimitive
-            type="button"
-            onPress={handleTogglePasswordVisibility}
-            className="atrs relative isSfx x2e2 [&_[data-slot=icon]]:text-muted-fg focus:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded"
+    <TextFieldPrimitive
+      type={inputType}
+      {...props}
+      className={composeTailwindRenderProps(className, "group flex flex-col gap-y-1")}
+    >
+      {!props.children ? (
+        <>
+          {label && <Label>{label}</Label>}
+          <FieldGroup
+            isDisabled={props.isDisabled}
+            isInvalid={!!errorMessage}
+            data-loading={isPending ? "true" : undefined}
           >
-            <>
-              {isPasswordVisible ? (
-                <IconEyeClosed className="transition animate-in" />
+            {prefix && typeof prefix === "string" ? (
+              <span className="ml-2 text-muted-fg">{prefix}</span>
+            ) : (
+              prefix
+            )}
+            <Input placeholder={placeholder} />
+            {isRevealable ? (
+              <ButtonPrimitive
+                type="button"
+                aria-label="Toggle password visibility"
+                onPress={handleTogglePasswordVisibility}
+                className="relative mr-1 grid shrink-0 place-content-center rounded-sm border-transparent outline-hidden *:data-[slot=icon]:text-muted-fg focus-visible:*:data-[slot=icon]:text-primary"
+              >
+                {isPasswordVisible ? <IconEyeClosed /> : <IconEye />}
+              </ButtonPrimitive>
+            ) : isPending ? (
+              <Loader variant="spin" />
+            ) : suffix ? (
+              typeof suffix === "string" ? (
+                <span className="mr-2 text-muted-fg">{suffix}</span>
               ) : (
-                <IconEye className="transition animate-in" />
-              )}
-            </>
-          </ButtonPrimitive>
-        ) : isLoading && indicatorPlace === 'suffix' ? (
-          <IconLoader className="animate-spin isSfx" />
-        ) : suffix ? (
-          <span className="atrs isSfx x2e2">{suffix}</span>
-        ) : null}
-      </FieldGroup>
-      {description && <Description>{description}</Description>}
-      <FieldError>{errorMessage}</FieldError>
+                suffix
+              )
+            ) : null}
+          </FieldGroup>
+          {description && <Description>{description}</Description>}
+          <FieldError>{errorMessage}</FieldError>
+        </>
+      ) : (
+        props.children
+      )}
     </TextFieldPrimitive>
   )
 }
 
-export { TextField, TextFieldPrimitive, type TextFieldProps }
+export type { TextFieldProps }
+export { TextField }
